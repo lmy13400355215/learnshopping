@@ -83,6 +83,8 @@
 #### git branch 查看分支 
 #### git checkout -b dev 创建并切换到dev分支 
 #### 切换分支：git checkout 分支名 
-#### 拉取: git pull
 #### 分支合并: git merge branchname
+#### 将分支推送到远程 git push origin HEAD -u 
+#### 更新远程代码到本地仓库: git fetch
+#### 更新远程代码到本地仓库并合并分支: git pull
 
