@@ -89,4 +89,16 @@
 #### 更新远程代码到本地仓库: git fetch
 #### 拉取: git pull
 #### -----------20181204--------------
-#### 
+#### 创建一个分支并推送到远程仓库
+##### git checkout -b dev
+##### git push origin head -u 
+#### 将idea中的项目提交到GitHub的dev分支
+##### git add gitconfig.md
+##### git commit -m "提交gitconfig.md"
+##### git push origin dev
+#### 远程合并dev分支
+##### git checkout dev 
+##### git pull origin dev
+##### git checkout master
+##### git merge dev
+##### git push origin master
