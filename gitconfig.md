@@ -28,7 +28,7 @@
 ### 将暂存区文件添加到本地仓库
 #### git commit -m "内容描述"
 ### 关联本地仓库和远程仓库
-#### git remote add oriain 远程仓库地址
+#### git remote add origin 远程仓库地址
 ### 第一次推送：本地仓库提交到远程仓库
 #### git push -u -f origin master
 ### 以后：本地仓库提交到远程仓库
