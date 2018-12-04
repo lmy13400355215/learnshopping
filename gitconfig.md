@@ -89,4 +89,17 @@
 #### 更新远程代码到本地仓库: git fetch
 #### 拉取: git pull
 #### -----------20181204--------------
-#### 创建
+#### 创建一个分支并推送到远程仓库
+##### git checkout -b dev
+##### git push origin head -u
+#### 将idea项目提交到GitHub
+##### git add 要提交的文件名
+##### git commit -m "要提交的文件"
+##### git push origin 要提交到的分支名
+#### 远程合并dev分支
+##### git checkout dev
+##### git pull origin dev
+##### git checkout master
+##### git merge dev
+##### git push origin master
+
