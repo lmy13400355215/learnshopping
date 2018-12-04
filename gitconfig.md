@@ -50,9 +50,9 @@
 #### 解除关联：(git remote remove origin)
 #### git push -u origin master
 ### 后续提交：
-#### git add .
+#### git add 要更新的文件
 #### git commit -m "..."
-#### git push
+#### git push origin 要提交到的分支名
 ### --------------------------------------------
 ### 企业项目开发模式 
 #### 项目采用： 分支开发，主干发布  
@@ -87,6 +87,6 @@
 #### 分支合并: git merge branchname
 #### 将分支推送到远程 git push origin HEAD -u 
 #### 更新远程代码到本地仓库: git fetch
-#### 更新远程代码到本地仓库并合并分支: git pull
+#### 拉取: git pull
 #### -----------20181204--------------
 #### 
