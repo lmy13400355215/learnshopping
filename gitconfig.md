@@ -261,3 +261,44 @@ create table neuedu_shipping(
  PRIMARY KEY(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 ```
+### 项目架构--四层架构
+```
+ 视图层
+ 控制层controller
+ 业务逻辑层service
+    接口和实现类
+ Dao层
+```
+
+### Mybatis-generator插件
+#### 配置db.properties
+#### 配置generatorConfig.xml --自动生成dao层 实体类 和映射文件
+```
+<properties resource="db.properties"></properties>
+<classPathEntry location="C:\Users\liumengyu\.m2\repository\mysql\mysql-connector-java\5.1.47\mysql-connector-java-5.1.47.jar"/>
+```
+##### 实体类：
+        ```
+		targetPackage="" --放在哪个包下边
+		targetProject="" --放在哪个项目下
+		```
+##### 配置数据表：
+        ```
+  	    tableName="" --数据库中表的名称
+		domainObjectName="" --生成的实体类的名字 首字母大写	
+		```
+##### 运行：
+###### MavenProjects-->Plugins--->mybatis-generator-->mybatis-generator:generate
+### 搭建ssm框架
+#### 引入依赖包
+#### 配置文件
+##### spring.xml
+##### 开启注解 --因为使用的是基于注解的IOC 
+##### springmvc.xml
+##### 管理controller
+##### 前后端分离，服务器往前端返回是json数据
+##### mybatis-config.xml
+##### logback.xml
+##### web.xml
+##### @RestController 向前端返回的数据是json格式的
+##### 配置tomcat
