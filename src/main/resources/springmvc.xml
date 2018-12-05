@@ -46,20 +46,4 @@
     </bean>
 
 
-    <mvc:interceptors>
-        <!--拦截所有请求-->
-        <mvc:interceptor>
-            <!--
-               /manage/a
-               /manage/b/login.do
-               /manage/order/create.do
-            -->
-            <mvc:mapping path="/manage/**"/>
-            <mvc:exclude-mapping path="/manage/user/login.do"/>
-            <bean  class="com.neuedu.controller.common.intercepter.AuthorityInterceptor"></bean>
-        </mvc:interceptor>
-
-    </mvc:interceptors>
-
-
 </beans>
