@@ -50,9 +50,15 @@
 #### 解除关联：(git remote remove origin)
 #### git push -u origin master
 ### 后续提交：
+<<<<<<< HEAD
 #### git add 要更新的文件
 #### git commit -m "..."
 #### git push origin 要提交到的分支名
+=======
+#### git add 要提交到远程的文件
+#### git commit -m "..."
+#### git push origin 要提交的远程分支名
+>>>>>>> dev
 ### --------------------------------------------
 ### 企业项目开发模式 
 #### 项目采用： 分支开发，主干发布  
@@ -90,6 +96,7 @@
 #### 拉取: git pull
 #### -----------20181204--------------
 #### 创建一个分支并推送到远程仓库
+<<<<<<< HEAD
 ##### git checkout -b dev
 ##### git push origin head -u 
 #### 将idea中的项目提交到GitHub的dev分支
@@ -102,3 +109,217 @@
 ##### git checkout master
 ##### git merge dev
 ##### git push origin master
+=======
+ ```
+ git checkout -b dev
+ git push origin head -u
+ ```
+#### 将idea项目提交到GitHub
+ ```
+ git add 要提交的文件名
+ git commit -m "要提交的文件"
+ git push origin 要提交到的分支名
+ ```
+#### 远程合并dev分支
+ ```
+ git checkout dev
+ git pull origin dev
+ git checkout master
+ git merge dev
+ git push origin master
+ ```
+ ## 数据库设计
+ ### 创建数据库
+ ```
+ create database learnshopping;
+ use learnshopping;
+ ```
+ ### 用户表
+ ```
+ create table neuedu_user(
+ `id` int(11) not null auto_increment comment '用户id',
+ `username` varchar(50) not null comment '用户名',
+ `password` varchar(50) not null comment '密码',
+ `email` varchar(50) not null comment '邮箱',
+ `phone` varchar(11) not null comment '联系方式',
+ `question` varchar(100) not null comment '密保问题',
+ `answer` varchar(100) not null comment '答案',
+ `role` int(4) not null default 0 comment '用户角色',
+ `create_time` datetime comment '创建时间',
+ `update_time` datetime comment '修改时间',
+  PRIMARY KEY(`id`),
+  UNIQUE KEY `user_name_index`(`username`) USING BTREE
+ )ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+ ```
+ ### 类别表
+ ```
+ create table neuedu_category(
+ `id`        int(11)     not null auto_increment comment '类别id',
+ `parent_id` int(11)     not null default 0 comment '父类id',
+ `name`      varchar(50) not null comment '父类名称',
+ `status`    int(4) default 1 comment '类别状态 1:正常 0:废弃',
+ `create_time` datetime comment '创建时间',
+ `update_time` datetime comment '修改时间',
+  PRIMARY KEY(`id`)
+  )ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+ 
+                    id      parent_id
+ 电子产品   1        1          0
+ 家店       2        2          1
+ 手机       2        3          1
+ 电脑       2        4          1
+ 相机       2        5          1
+ 华为手机   3        6          3
+ 小米手机   3        7          3
+ p系列      4        8          6
+ mate系列   4        9          6
+ 
+ 查看电子产品的商品----> 递归
+ ```
+ ### 商品表
+```
+ create table neuedu_product(
+ `id`           int(11)     not null auto_increment comment '商品id',
+ `category_id`  int(11)     not null comment '商品所属类别id，值引用类别表的id',
+ `name`         varchar(100) not null comment '商品名称',
+ `detail`       text comment '商品详情',
+ `subtitle`     varchar(200) comment '商品副标题',
+ `main_image`   varchar(200) comment '商品主图',
+ `sub_images`   varchar(200) comment '商品子图',
+ `price`        decimal(20,2) not null comment '商品价格，总共20位，小数2位，正数18位',
+ `stock`        int(11) comment '商品库存',
+ `status`       int(6)  default 1 comment '商品状态 1:在售 2:下架 3:删除',
+ `create_time` datetime comment '创建时间',
+ `update_time` datetime comment '修改时间',
+  PRIMARY KEY(`id`)
+ )ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+ ```
+ ### 购物车表
+ ```
+ create table neuedu_cart(
+ `id`           int(11)     not null auto_increment comment '购物车id',
+ `user_id`      int(11)     not null comment '用户id',
+ `product_id`   int(11)     not null comment '商品id',
+ `quantity`     int(11)     not null comment '购买数量',
+ `checked`      int(4)      default 1 comment '1:选中 2:未选中',
+ `create_time` datetime comment '创建时间',
+ `update_time` datetime comment '修改时间',
+  PRIMARY KEY(`id`),
+  key `user_id_index`(`user_id`) USING BTREE
+ )ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+ ```
+ ### 订单表
+ ```
+  create table neuedu_order(
+ `id`           int(11)     not null auto_increment comment '订单id,主键',
+ `order_no`     bigint(20)  not null comment '订单编号',
+ `user_id`      int(11) not null comment '用户id',
+ `payment`      decimal(20,2) not null comment '付款总金额,单位(元),保留两位小数',
+ `payment_type` int(4) not null default 1 comment '付款方式 1:线上支付',
+ `status`       int(10) not null comment '订单状态 0:已取消 10:未付款 20:已付款 30:已发货 40:已完成 50:已关闭',
+ `shipping_id`  int(11) not null comment '收货地址id',
+ `postage`      int(10) not null default 0 comment '运费',
+ `payment_time` datetime default null comment '已付款时间',
+ `send_time`    datetime default null comment '已发货时间',
+ `close_time`   datetime default null comment '已关闭时间',
+ `finish_time`  datetime default null comment '已结束时间',
+ `create_time` datetime comment '已创建时间',
+  `update_time` datetime comment '更新时间',
+   PRIMARY KEY(`id`),
+   key `order_no_index`(`order_no`) USING BTREE
+ )ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+ ```
+ ### 订单明细表
+ ```
+create table neuedu_order_item(
+ `id`           int(11)     not null auto_increment comment '订单明细id,主键',
+  `order_no`     bigint(20)  not null comment '订单编号',
+  `user_id`      int(11) not null comment '用户id',
+ `product_id`    int(11) not null comment '商品id',
+ `product_name`  varchar(100) not null comment '商品名称',
+ `product_image` varchar(200) comment '商品主图',
+ `current_unit_price` decimal(20,2) not null comment '下单时商品的价格，单位(元)，保留两位小数',
+ `quantity` int(10) not null comment '商品的购买数量',
+ `total_price` decimal(20,2) not null comment '商品的总价格，单位(元)，保留两位小数',
+ `create_time` datetime comment '已创建时间',
+ `update_time` datetime comment '更新时间',
+  PRIMARY KEY(`id`),
+  key `order_no_index`(`order_no`) USING BTREE,
+  key `order_no_user_id_index`(`order_no`,`user_id`) USING BTREE
+ )ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+ ```
+ 
+ ### 支付表
+ ```
+ create table neuedu_payinfo(
+  `id`           int(11)     not null auto_increment comment '主键',
+  `order_no`     bigint(20)  not null comment '订单编号',
+  `user_id`      int(11) not null comment '用户id',
+  `pay_platform` int(4)  not null default 1 comment '1:支付宝 2:微信',
+  `platform_status` varchar(50) comment '支付状态',
+  `platform_number` varchar(100) comment '流水号',
+  `create_time` datetime comment '已创建时间',
+  `update_time` datetime comment '更新时间',
+   PRIMARY KEY(`id`)
+  )ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+  ```
+ ### 地址表
+ ```
+create table neuedu_shipping(
+ `id` int(11) not null auto_increment,
+ `user_id` int(11) not null,
+ `receiver_name` varchar(20) default null comment '收货姓名',
+ `receiver_phone` varchar(20) default null comment '收货固定电话',
+ `receiver_mobile` varchar(20) default null comment '收货移动电话',
+ `receiver_province` varchar(20) default null comment '省份',
+ `receiver_city` varchar(20) default null comment '城市',
+ `receiver_district` varchar(20) default null comment '区/县',
+ `receiver_address` varchar(200) default null comment '详细地址',
+ `receiver_zip` varchar(6) default null comment '邮编',
+ `create_time` datetime not null comment '创建时间',
+ `update_time` datetime not null comment '最后一次更新时间',
+ PRIMARY KEY(`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+```
+### 项目架构--四层架构
+```
+ 视图层
+ 控制层controller
+ 业务逻辑层service
+    接口和实现类
+ Dao层
+```
+
+### Mybatis-generator插件
+#### 配置db.properties
+#### 配置generatorConfig.xml --自动生成dao层 实体类 和映射文件
+```
+<properties resource="db.properties"></properties>
+<classPathEntry location="C:\Users\liumengyu\.m2\repository\mysql\mysql-connector-java\5.1.47\mysql-connector-java-5.1.47.jar"/>
+```
+##### 实体类：
+```
+		targetPackage="" --放在哪个包下边
+		targetProject="" --放在哪个项目下
+```
+##### 配置数据表：
+```
+  	    tableName="" --数据库中表的名称
+		domainObjectName="" --生成的实体类的名字 首字母大写	
+```
+##### 运行：
+###### MavenProjects-->Plugins--->mybatis-generator-->mybatis-generator:generate
+### 搭建ssm框架
+#### 引入依赖包
+#### 配置文件
+##### spring.xml
+##### 开启注解 --因为使用的是基于注解的IOC 
+##### springmvc.xml
+##### 管理controller
+##### 前后端分离，服务器往前端返回是json数据
+##### mybatis-config.xml
+##### logback.xml
+##### web.xml
+##### @RestController 向前端返回的数据是json格式的
+##### 配置tomcat
+
