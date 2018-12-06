@@ -52,8 +52,8 @@
       question = #{question,jdbcType=VARCHAR},
       answer = #{answer,jdbcType=VARCHAR},
       role = #{role,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      create_time = now(),
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -74,5 +74,19 @@
     select id, username, password, email, phone, question, answer, role, create_time, 
     update_time
     from neuedu_user
+  </select>
+  
+  <select id="checkUsername" parameterType="string" resultType="int">
+    select count(1) from neuedu_user where username=#{username}
+  </select>
+
+  <select id="selectByUsernameAndPassword" parameterType="map" resultMap="BaseResultMap">
+    select id, username, password, email, phone, question, answer, role, create_time,
+    update_time
+    from neuedu_user where username=#{username} and password=#{password}
+  </select>
+
+  <select id="checkEmail" parameterType="string" resultType="int">
+    select count(1) from neuedu_user where email=#{email}
   </select>
 </mapper>
