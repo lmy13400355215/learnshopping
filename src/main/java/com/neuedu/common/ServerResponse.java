@@ -90,10 +90,6 @@ public static ServerResponse createServerResponseByError(int status,String msg){
 
 
 
-
-
-
-
     public int getStatus() {
         return status;
     }
