@@ -56,6 +56,15 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <update id="updatePasswordByUsername" parameterType="com.neuedu.pojo.UserInfo">
+    update neuedu_user
+    set
+    password = #{password,jdbcType=VARCHAR},
+    update_time = now()
+    where username = #{username,jdbcType=INTEGER}
+  </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--
       WARNING - @mbg.generated
@@ -88,5 +97,13 @@
 
   <select id="checkEmail" parameterType="string" resultType="int">
     select count(1) from neuedu_user where email=#{email}
+  </select>
+
+  <select id="selectQuestionByUsername" parameterType="string" resultType="string">
+    select question from neuedu_user where username=#{username}
+  </select>
+
+  <select id="checkAnswerByUsernameAndQuestion" parameterType="string" resultType="int">
+    select count(1) from neuedu_user where username=#{username} and question=#{question} and answer=#{answer}
   </select>
 </mapper>
