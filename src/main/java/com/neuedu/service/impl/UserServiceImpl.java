@@ -12,7 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.UUID;
 
 @Service
@@ -20,6 +19,9 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     UserInfoMapper userInfoMapper;
 
+    /**
+     *登录接口
+     */
     @Override
     public ServerResponse login(String username, String password) {
 
@@ -53,6 +55,10 @@ public class UserServiceImpl implements IUserService {
         userInfo.setPassword("");
         return ServerResponse.createServerResponseBySucess(null,userInfo);
     }
+
+    /**
+     *注册接口
+     */
     @Override
     public ServerResponse register(UserInfo userInfo) {
         //step1:参数非空校验
@@ -94,11 +100,15 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createServerResponseByError("注册失败");
     }
 
+    /**
+     * 检查用户或邮箱是否有效的接口
+     */
+
     @Override
     public ServerResponse check_valid(String str, String type) {
         //step1:参数非空校验
         if (StringUtils.isBlank(str)||StringUtils.isBlank(type)){
-            return ServerResponse.createServerResponseByError("参数不能为空");
+            return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY .getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
         }
         //step2:判断用户名或者邮箱是否有效
         if (type.equals(Const.USERNAME)){
@@ -120,6 +130,10 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createServerResponseByError("type参数传递有误");
     }
 
+    /**
+     * 根据用户名获取密保问题
+     */
+
     @Override
     public ServerResponse forget_get_question(String username) {
         //step1:参数非空校验
@@ -129,7 +143,7 @@ public class UserServiceImpl implements IUserService {
         //step2:判断用户名是否存在
         ServerResponse serverResponse=check_valid(username,Const.USERNAME);
         if (serverResponse.getStatus()!=ResponseCode.EXISTS_USERNAME.getStatus()){//用户名不存在
-            return serverResponse.createServerResponseByError(ResponseCode.NOT_EXISTS_USERNAME.getStatus(),ResponseCode.NOT_EXISTS_USERNAME.getMsg());
+            return ServerResponse.createServerResponseByError(ResponseCode.NOT_EXISTS_USERNAME.getStatus(),ResponseCode.NOT_EXISTS_USERNAME.getMsg());
         }
         //step3:查询密保问题
         String question=userInfoMapper.selectQuestionByUsername(username);
@@ -140,6 +154,9 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createServerResponseBySucess(null,question);
     }
 
+    /**
+     *提交问题答案
+     */
     @Override
     public ServerResponse forget_check_answer(String username, String question, String answer) {
         //step1:参数非空校验
@@ -159,11 +176,14 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createServerResponseBySucess(null,user_token);
     }
 
+    /**
+     *修改密码
+     */
     @Override
     public ServerResponse forget_reset_password(String username, String passwordNew,String forgetToken) {
         //step1:参数非空校验
         if (StringUtils.isBlank(username)||StringUtils.isBlank(passwordNew)||StringUtils.isBlank(forgetToken)){
-            return ServerResponse.createServerResponseByError("参数不能为空");
+            return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY .getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
         }
 
         //step3:校验token
@@ -185,12 +205,15 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createServerResponseBySucess();
     }
 
+    /**
+     *登录状态下重置密码
+     */
     @Override
     public ServerResponse reset_password(UserInfo userInfo, String passwordOld, String passwordNew) {
 
         //step1:参数非空校验
         if (StringUtils.isBlank(passwordOld)||StringUtils.isBlank(passwordNew)){
-            return ServerResponse.createServerResponseByError("参数不能为空");
+            return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY .getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
         }
         //step2:校验旧密码是否正确
         UserInfo userInfoOld=userInfoMapper.selectByUsernameAndPassword(userInfo.getUsername(),MD5Utils.getMD5Code(passwordOld));

@@ -88,6 +88,7 @@ public class UserController {
      */
     @RequestMapping(value = "forget_get_question.do")
     public ServerResponse forget_get_question(String username){
+
         return userService.forget_get_question(username);
     }
     /**
@@ -129,4 +130,6 @@ public class UserController {
         }
         return ServerResponse.createServerResponseByError(ResponseCode.USER_NOT_LOGIN.getStatus(),ResponseCode.USER_NOT_LOGIN.getMsg());
     }
+
+
 }
