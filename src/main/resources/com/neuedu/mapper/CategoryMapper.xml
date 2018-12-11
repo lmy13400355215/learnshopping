@@ -67,4 +67,5 @@
     select id, parent_id, name, status, create_time, update_time
     from neuedu_category where parent_id=#{parent_id}
   </select>
+
 </mapper>

@@ -1,6 +1,6 @@
 package com.neuedu.controller.portal;
 
-public class CatrController {
+public class CartController {
 
 
 }

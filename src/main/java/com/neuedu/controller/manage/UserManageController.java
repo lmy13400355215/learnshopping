@@ -17,6 +17,13 @@ public class UserManageController {
     @Autowired
     IUserService userService;
 
+    /**
+     * 管理员登录
+     * @param session
+     * @param username
+     * @param password
+     * @return
+     */
     @RequestMapping(value = "login.do")
     public ServerResponse login(HttpSession session, String username, String password){
 

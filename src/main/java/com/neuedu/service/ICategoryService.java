@@ -2,6 +2,8 @@ package com.neuedu.service;
 
 import com.neuedu.common.ServerResponse;
 
+import javax.servlet.http.HttpSession;
+
 
 public interface ICategoryService {
     /**
@@ -19,4 +21,8 @@ public interface ICategoryService {
      */
     ServerResponse set_category_name(Integer categoryId, String categoryName);
 
+    /**
+     * 修改当前分类id及递归子节点categoryId
+     */
+    ServerResponse get_deep_category(Integer categoryId);
 }
